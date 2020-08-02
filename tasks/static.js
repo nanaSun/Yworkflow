@@ -19,7 +19,7 @@ var gulp = require('gulp');
 var path = require('path');
 var chalk = require('chalk');
 var plugins = require('gulp-load-plugins')();
-var runSequence = require('run-sequence');
+var runSequence = require('gulp4-run-sequence');
 
 var changedDeps = require('./plugins/gulp-changed-deps/');
 
@@ -45,7 +45,7 @@ gulp.task('static', function(done) {
     });
     if (PROJECT_CONFIG.debug) {
         // 监听文件，触发文件拷贝
-        gulp.watch(staticFiles, staticTasks);
+        gulp.watch(staticFiles, gulp.series(...staticTasks));
     }
     staticTasks.push(done);
     runSequence.apply(runSequence, staticTasks);

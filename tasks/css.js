@@ -17,7 +17,7 @@ var gulp = require('gulp');
 var path = require('path');
 var chalk = require('chalk');
 var plugins = require('gulp-load-plugins')();
-var runSequence = require('run-sequence');
+var runSequence = require('gulp4-run-sequence');
 
 var changedDeps = require('./plugins/gulp-changed-deps/');
 
@@ -127,7 +127,7 @@ gulp.task('css:copy:build', function() {
 // 监听css变化
 gulp.task('css', function(done) {
     // 监听CSS文件
-    gulp.watch(path.join(src, '**/*.{' + TASK_CONFIG.extensions.join(',') + '}'), ['css:css', 'css:scss', 'css:copy'])
+    gulp.watch(path.join(src, '**/*.{' + TASK_CONFIG.extensions.join(',') + '}'), gulp.series('css:css', 'css:scss', 'css:copy'))
         .on('change', function(event) {
             console.log(chalk.green('[文件变化:CSS]' + event.path));
         });

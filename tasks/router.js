@@ -15,7 +15,7 @@ const _ = require('lodash');
 const path = require('path');
 const fs = require('fs');
 const gulp = require('gulp');
-const runSequence = require('run-sequence');
+const runSequence = require('gulp4-run-sequence');
 const dateformat = require('dateformat');
 const sortJson = require('sort-json');
 const ejs = require('ejs');
@@ -65,7 +65,7 @@ gulp.task('router:concat', function() {
 });
 
 gulp.task('router', function(done) {
-	gulp.watch(path.join(PROJECT_CONFIG.absPath,TASK_CONFIG.srcEntry,'**/*'), ['router:concat']);
+	gulp.watch(path.join(PROJECT_CONFIG.absPath,TASK_CONFIG.srcEntry,'**/*'), gulp.series('router:concat'));
 	runSequence('router:concat', done);
 });
 

@@ -21,7 +21,7 @@ var gulp = require('gulp');
 var path = require('path');
 var chalk = require('chalk');
 var plugins = require('gulp-load-plugins')();
-var runSequence = require('run-sequence');
+var runSequence = require('gulp4-run-sequence');
 var changedDeps = require('./plugins/gulp-changed-deps/');
 
 // 将处理文件全部拷贝到输出目录
@@ -45,7 +45,7 @@ gulp.task('img:optimize', function(done) {
 
 gulp.task('img', function(done) {
 	// 监听图片文件
-	gulp.watch(path.join(src, '**/*.{' + TASK_CONFIG.extensions.join(',') + '}'), ['img:copy']);
+	gulp.watch(path.join(src, '**/*.{' + TASK_CONFIG.extensions.join(',') + '}'), gulp.series('img:copy'));
 	runSequence('img:copy', done);
 });
 

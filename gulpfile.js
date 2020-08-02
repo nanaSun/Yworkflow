@@ -8,7 +8,7 @@ const path = require('path');
 const gulp = require('gulp');
 const chalk = require('chalk');
 const figlet = require('figlet');
-const runSequence = require('run-sequence');
+const runSequence = require('gulp4-run-sequence');
 const gutil = require('gulp-util');
 const fs = require('fs');
 
@@ -91,10 +91,11 @@ gulp.task('build', function(done) {
  * @param  {[type]} done){} [description]
  * @return {[type]}           [description]
  */
-gulp.task('dev', ['nodemon'], function(done) {
+gulp.task('dev', gulp.parallel(function(done) {
     let configFile = gutil.env.path ? gutil.env.path : '../.yconfig';
     var tasks = ['clean'];
     tasks = tasks.concat(Object.keys(PROJECT_CONFIG.tasks));
+    try{
     if (process.env.NODE_ENV === 'production') {
         tasks.push('html:tricky');
         tasks.push(done);
@@ -102,7 +103,9 @@ gulp.task('dev', ['nodemon'], function(done) {
     } else {
         tasks.push(done);
         runSequence.apply(runSequence, tasks);
+    }}catch(e){
+        done();
     }
-});
+},'nodemon'));
 
-gulp.task('default', ['dev']);
+gulp.task('default',  gulp.series('dev'));

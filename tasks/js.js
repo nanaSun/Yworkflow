@@ -13,7 +13,7 @@ var TASK_CONFIG = PROJECT_CONFIG.tasks.js;
 
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
-var runSequence = require('run-sequence');
+var runSequence = require('gulp4-run-sequence');
 var path = require('path');
 var chalk = require('chalk');
 
@@ -75,7 +75,7 @@ gulp.task('js:copy:build', function () {
 
 
 gulp.task('js', function (done) {
-        gulp.watch(path.join(src, '**/*.js'), ['js:eslint', 'js:transport','js:copy'])
+        gulp.watch(path.join(src, '**/*.js'), gulp.series('js:eslint', 'js:transport','js:copy'))
         .on('change',function(event){
             console.log(chalk.green('[文件变化:JS]' + event.path));
         })

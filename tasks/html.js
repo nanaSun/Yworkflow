@@ -15,7 +15,7 @@ var PROJECT_ABS_PATH = PROJECT_CONFIG.absPath;
 var TASK_CONFIG = PROJECT_CONFIG.tasks.html;
 
 var plugins = require('gulp-load-plugins')();
-var runSequence = require('run-sequence');
+var runSequence = require('gulp4-run-sequence');
 var glob = require('glob');
 var htmlbeautify = require('gulp-html-beautify');
 
@@ -65,7 +65,7 @@ if (TASK_CONFIG.multiple) { // 以子目录为单位
 gulp.task('html', function (done) {
     var tasks = [];
     htmlCompileTasks.forEach(function (task) {
-        gulp.watch(task.src, [task.name]); // 启动HTML编译监听
+        gulp.watch(task.src, gulp.series(task.name)); // 启动HTML编译监听
         tasks.push(task.name);
     });
     tasks.push(done);

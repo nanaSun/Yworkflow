@@ -1,7 +1,7 @@
 'use strict'
 
 const urlParse = require('url').parse;
-
+const JSONbig = require('json-bigint');
 const chalk = require('chalk');
 const request = require('request');
 
@@ -13,11 +13,11 @@ module.exports = function (method, url, params, headers, callback) {
         gzip:true
     };
     if (method === 'post' && headers['content-type'] === 'application/json') {
-        options.body = JSON.stringify(params);
+        options.body = JSONbig.stringify(params);
     } else {
         options.form = params;
     }
-    console.log(chalk.bgRed('[请求' + method.toUpperCase() +  ']'), chalk.red(url), chalk.red(JSON.stringify(params))); // eslint-disable-line no-console
+    console.log(chalk.bgRed('[请求' + method.toUpperCase() +  ']'), chalk.red(url), chalk.red(JSONbig.stringify(params))); // eslint-disable-line no-console
 
     request[method](options, function (err, res, result) {
         if (err) {
@@ -26,8 +26,8 @@ module.exports = function (method, url, params, headers, callback) {
             return;
         }
         try {
-            result = JSON.stringify(JSON.parse(result),null,4);
-            callback.call(res, null, JSON.parse(result));
+            result = JSONbig.stringify(JSONbig.parse(result),null,4);
+            callback.call(res, null, JSONbig.parse(result));
         } catch (ex) {
             console.log(chalk.red('数据转JSON失败:'), ex); // eslint-disable-line no-console
             callback(ex);

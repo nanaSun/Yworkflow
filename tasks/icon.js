@@ -27,7 +27,7 @@ var gulp = require('gulp');
 var path = require('path');
 var chalk = require('chalk');
 var plugins = require('gulp-load-plugins')();
-var runSequence = require('run-sequence');
+var runSequence = require('gulp4-run-sequence');
 
 var changedDeps = require('./plugins/gulp-changed-deps/');
 var svgTransport = require('./plugins/gulp-svg-transport/');
@@ -144,7 +144,7 @@ gulp.task('icon', function (done) {
     var tasks = [];
     imgResizeTasks.forEach(function (task) {
         if (PROJECT_CONFIG.debug) {
-            var watcher = gulp.watch(task.src, [task.name]); // 启动图片压缩监听
+            var watcher = gulp.watch(task.src, gulp.series(task.name)); // 启动图片压缩监听
             watcher.on('change', function (event) {
                 var img1xSrc;
                 if (event.type === 'renamed') {
@@ -160,12 +160,12 @@ gulp.task('icon', function (done) {
     });
 
     imgSpriteTasks.forEach(function (task) {
-        PROJECT_CONFIG.debug && gulp.watch(task.src, [task.name]); // 启动图片合并监听
+        PROJECT_CONFIG.debug && gulp.watch(task.src, gulp.series(task.name)); // 启动图片合并监听
         tasks.push(task.name);
     });
 
     svgSpriteTasks.forEach(function (task) {
-        PROJECT_CONFIG.debug && gulp.watch(task.src, [task.name]); // 启动SVG合并监听
+        PROJECT_CONFIG.debug && gulp.watch(task.src, gulp.series(task.name)); // 启动SVG合并监听
         tasks.push(task.name);
     });
 

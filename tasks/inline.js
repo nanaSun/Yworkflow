@@ -26,7 +26,7 @@ var usemin = require('gulp-usemin');
 var cleanCss = require('gulp-clean-css');
 var eos = require('end-of-stream');
 var chalk = require('chalk');
-var runSequence = require('run-sequence');
+var runSequence = require('gulp4-run-sequence');
 
 // 因为inline之前基本都需要一个替换的动作,所以inline前先执行一个replace的操作
 gulp.task('inline:replace', function (cb) {

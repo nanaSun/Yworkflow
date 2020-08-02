@@ -15,7 +15,7 @@ var gulp = require('gulp');
 var path = require('path');
 var chalk = require('chalk');
 var plugins = require('gulp-load-plugins')();
-var runSequence = require('run-sequence');
+var runSequence = require('gulp4-run-sequence');
 
 var changedDeps = require('./plugins/gulp-changed-deps/');
 
@@ -65,9 +65,9 @@ gulp.task('font:copy:build', function() {
 
 gulp.task('font', function(done) {
     // 监听html文件，触发字体压缩
-    gulp.watch(path.join(src, '**/*.html'), ['font:compress']);
+    gulp.watch(path.join(src, '**/*.html'),  gulp.series('font:compress'));
     // 监听字体文件，触发字体复制
-    gulp.watch(path.join(src, '**/*.{' + TASK_CONFIG.extensions.join(',') + '}'), ['font:copy']);
+    gulp.watch(path.join(src, '**/*.{' + TASK_CONFIG.extensions.join(',') + '}'),  gulp.series('font:copy'));
 
     // 默认执行一次字体复制
     runSequence('font:copy', done);

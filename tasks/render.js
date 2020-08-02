@@ -27,7 +27,7 @@ const request = require('request');
 const Minimize = require('gulp-minimize');
 
 const plugins = require('gulp-load-plugins')();
-const runSequence = require('run-sequence');
+const runSequence = require('gulp4-run-sequence');
 
 const changedDeps = require('./plugins/gulp-changed-deps/');
 
@@ -92,7 +92,7 @@ Object.keys(render_routes).forEach(function(router) {
 gulp.task('render', function(done) {
 	var tasks = [];
     htmlRenderTasks.forEach(function (task) {
-        PROJECT_CONFIG.debug && gulp.watch(task.src, [task.name]); // 启动RENDER编译监听
+        PROJECT_CONFIG.debug && gulp.watch(task.src, gulp.series(task.name)); // 启动RENDER编译监听
         tasks.push(task.name);
     });
     // 如果开启了压缩,则执行压缩task
